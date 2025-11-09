@@ -143,7 +143,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ElevatedButton(
                       onPressed: () {
                         addTask();
-                        print("You entered: ${controller.text}");
                         Navigator.pop(context);
                       },
                       child: const Text('Add Task'),
