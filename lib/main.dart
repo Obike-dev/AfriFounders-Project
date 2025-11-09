@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:afrifounders_project/home_page.dart';
 import 'package:afrifounders_project/providers.dart';
 import 'package:afrifounders_project/theme.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {

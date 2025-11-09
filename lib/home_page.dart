@@ -1,3 +1,4 @@
+import 'package:afrifounders_project/edit_task.dart';
 import 'package:afrifounders_project/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,43 +66,62 @@ class _HomePageState extends ConsumerState<HomePage> {
                       onDismissed: (direction) {
                         ref.watch(taskListProvider.notifier).removeTask(index);
                       },
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 30,
-                          horizontal: 20,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.deepPurple.shade400, // slightly lighter purple
-                          borderRadius: BorderRadius.circular(16),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.2),
-                              spreadRadius: 1,
-                              blurRadius: 6,
-                              offset: const Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                taskList[index],
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                      child: GestureDetector(
+                        onTap: () {
+                          final editController = TextEditingController(text: taskList[index]);
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return EditTask(
+                                  controller: editController,
+                                  onSave: () {
+                                    ref.watch(taskListProvider.notifier).editTask(
+                                          index,
+                                          editController.text,
+                                        );
+                                    Navigator.pop(context);
+                                  },
+                                );
+                              });
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 30,
+                            horizontal: 20,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.deepPurple.shade400, // slightly lighter purple
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.2),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  taskList[index],
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const Icon(
-                              Icons.arrow_forward_ios,
-                              color: Colors.white70,
-                              size: 16,
-                            ),
-                          ],
+                              const Icon(
+                                Icons.arrow_forward_ios,
+                                color: Colors.white70,
+                                size: 16,
+                              ),
+                            ],
+                          ),
                         ),
                       ));
                 },
@@ -147,7 +167,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       },
                       child: const Text('Add Task'),
                     ),
-                    const SizedBox(height: 20)
+                    const SizedBox(height: 20),
                   ],
                 ),
               );

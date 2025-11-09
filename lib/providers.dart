@@ -19,6 +19,11 @@ class TaskListNotifier extends StateNotifier<List<String>> {
     state = prefs.getStringList('tasks') ?? [];
   }
 
+  Future<void> _saveToPrefs(List<String> tasks) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('tasks', tasks);
+  }
+
   Future<void> saveTask(String task) async {
     final prefs = await SharedPreferences.getInstance();
     state = [...state, task];
@@ -31,5 +36,12 @@ class TaskListNotifier extends StateNotifier<List<String>> {
     state = newList;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('tasks', state);
+  }
+
+  void editTask(int index, String newTask) async {
+    final updatedTasks = [...state];
+    updatedTasks[index] = newTask;
+    state = updatedTasks;
+    await _saveToPrefs(updatedTasks);
   }
 }
