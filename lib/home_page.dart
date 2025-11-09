@@ -36,61 +36,76 @@ class _HomePageState extends ConsumerState<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("AfriFounders Startup Studio Project"),
+        actions: [
+          IconButton(
+            icon: Icon(
+              ref.watch(themeProvider) == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
+            ),
+            onPressed: () {
+              final current = ref.read(themeProvider);
+              ref.read(themeProvider.notifier).state = current == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
-          const Divider(thickness: 2),
           const SizedBox(height: 20),
           Expanded(
-            child: ListView.builder(
-              itemCount: taskList.length, // add this to avoid infinite builder calls
-              itemBuilder: (context, index) {
-                return Dismissible(
-                    key: Key(taskList[index]),
-                    direction: DismissDirection.horizontal,
-                    onDismissed: (direction) {
-                      ref.watch(taskListProvider.notifier).removeTask(index);
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 30,
-                        horizontal: 20,
-                      ),
-                      decoration: BoxDecoration(
-                        color: Colors.deepPurple.shade400, // slightly lighter purple
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.2),
-                            spreadRadius: 1,
-                            blurRadius: 6,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              taskList[index],
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
+            child: ScrollConfiguration(
+              behavior: const ScrollBehavior().copyWith(
+                overscroll: false,
+              ),
+              child: ListView.builder(
+                itemCount: taskList.length, // add this to avoid infinite builder calls
+                itemBuilder: (context, index) {
+                  return Dismissible(
+                      key: Key(taskList[index]),
+                      direction: DismissDirection.horizontal,
+                      onDismissed: (direction) {
+                        ref.watch(taskListProvider.notifier).removeTask(index);
+                      },
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 30,
+                          horizontal: 20,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.deepPurple.shade400, // slightly lighter purple
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.2),
+                              spreadRadius: 1,
+                              blurRadius: 6,
+                              offset: const Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                taskList[index],
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                          ),
-                          const Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.white70,
-                            size: 16,
-                          ),
-                        ],
-                      ),
-                    ));
-              },
+                            const Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.white70,
+                              size: 16,
+                            ),
+                          ],
+                        ),
+                      ));
+                },
+              ),
             ),
           ),
         ],
